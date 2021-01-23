@@ -5,7 +5,11 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import PropTypes from 'prop-types';
 
-function ListProduct({ data }) {
+function ListProduct({ data, setClick }) {
+  const onClickHandler = (event, index) => {
+    setClick(index);
+  }
+
   return (
     <Table>
       <TableHead>
@@ -19,7 +23,13 @@ function ListProduct({ data }) {
         {
           data.map((value, index) => {
             return (
-              <TableRow key={index}>
+              <TableRow
+                onClick={
+                  (event) => {
+                    onClickHandler(event, index);
+                  }
+                }
+                key={index}>
                 <TableCell>{ value.id }</TableCell>
                 <TableCell>{ value.name }</TableCell>
                 <TableCell>{ value.price }</TableCell>

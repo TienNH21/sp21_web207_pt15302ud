@@ -12,18 +12,19 @@ function App() {
   ];
 
   const [products, setProducts] = useState(initValue);
+  const [click, setClick] = useState(-1);
 
   return (
     <div>
       <Container maxWidth="sm">
         <Typography
-          component="div"
-          style={{
-            backgroundColor: '#cfe8fc',
-            height: '100vh'
-          }}>
-            <CreateProduct />
-            <ListProduct data={ products } />
+          component="div">
+            <CreateProduct
+              products={ products }
+              click={ click }/>
+            <ListProduct
+              setClick={ setClick }
+              data={ products } />
           </Typography>
       </Container>
     </div>
