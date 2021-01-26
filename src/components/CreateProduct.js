@@ -3,31 +3,55 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { useState } from 'react';
 
-function CreateProduct({ click, products }) {
-  console.log('aaa')
-  const prod = click == -1 ?
-    { id: '', name: '', price: '' } :
-    products[click];
-
-  const [data, setData] = useState(prod);
-
+function CreateProduct({
+  click,
+  products,
+  setProducts,
+  formData: data,
+  setFormData: setData,
+}) {
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
-    prod[name] = value;
     setData({
       ...data,
       [name]: value
     });
   }
 
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+
+    if (click == -1) {
+      // Tạo mới
+      setProducts([
+        ...products,
+        data,
+      ]);
+    } else {
+      // Cập nhật
+      setProducts((oldState) => {
+        const newState = oldState.map((value, index) => {
+          if (index == click) {
+            return data;
+          } else {
+            return value;
+          }
+
+          // return index == click ? data : value;
+        });
+        return newState;
+      });
+    }
+  }
+
   return (
     <div>
-      <form>
+      <form onSubmit={ onSubmitHandler }>
         <TextField
           fullWidth
           label="Id"
           variant="outlined"
-          value={prod.id}
+          value={ data.id }
           name="id"
           onChange={ onChangeHandler }
           style={{ marginTop: '20px' }}
@@ -36,7 +60,7 @@ function CreateProduct({ click, products }) {
           fullWidth
           label="Name"
           variant="outlined"
-          value={prod.name}
+          value={data.name}
           name="name"
           onChange={ onChangeHandler }
           style={{ marginTop: '20px' }}
@@ -44,7 +68,7 @@ function CreateProduct({ click, products }) {
         <TextField
           fullWidth
           label="Price"
-          value={prod.price}
+          value={data.price}
           variant="outlined"
           name="price"
           onChange={ onChangeHandler }
@@ -52,6 +76,7 @@ function CreateProduct({ click, products }) {
           />
         <Box textAlign='center'>
           <Button
+            type="submit"
             variant="contained"
             style={{ marginTop: '20px' }}
             color="primary">

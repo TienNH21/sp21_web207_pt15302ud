@@ -11,8 +11,11 @@ function App() {
     { id: 3, name: 'Oppo', price: '5,999,999.00' },
   ];
 
+  const formDataInitValue = { id: '', name: '', price: '' };
+
   const [products, setProducts] = useState(initValue);
   const [click, setClick] = useState(-1);
+  const [formData, setFormData] = useState(formDataInitValue);
 
   return (
     <div>
@@ -21,8 +24,12 @@ function App() {
           component="div">
             <CreateProduct
               products={ products }
+              setProducts={ setProducts }
+              formData={ formData }
+              setFormData={ setFormData }
               click={ click }/>
             <ListProduct
+              setFormData={ setFormData }
               setClick={ setClick }
               data={ products } />
           </Typography>

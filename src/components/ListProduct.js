@@ -5,9 +5,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import PropTypes from 'prop-types';
 
-function ListProduct({ data, setClick }) {
-  const onClickHandler = (event, index) => {
+function ListProduct({ data, setClick, setFormData }) {
+  const onClickHandler = (event, index, value) => {
     setClick(index);
+    setFormData(value);
   }
 
   return (
@@ -26,7 +27,7 @@ function ListProduct({ data, setClick }) {
               <TableRow
                 onClick={
                   (event) => {
-                    onClickHandler(event, index);
+                    onClickHandler(event, index, value);
                   }
                 }
                 key={index}>
@@ -41,15 +42,5 @@ function ListProduct({ data, setClick }) {
     </Table>
   );
 }
-
-ListProduct.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.string.isRequired
-    })
-  ).isRequired
-};
 
 export default ListProduct;
