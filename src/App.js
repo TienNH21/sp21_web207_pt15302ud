@@ -1,21 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import ListProduct from './components/ListProduct';
 import CreateProduct from './components/CreateProduct';
+import axios from 'axios';
 
 function App() {
-  const initValue = [
-    { id: 1, name: 'IPhone 12', price: '33,999,999.00' },
-    { id: 2, name: 'IPhone 11', price: '16,999,999.00' },
-    { id: 3, name: 'Oppo', price: '5,999,999.00' },
-  ];
-
   const formDataInitValue = { id: '', name: '', price: '' };
 
-  const [products, setProducts] = useState(initValue);
+  const [products, setProducts] = useState([]);
   const [click, setClick] = useState(-1);
   const [formData, setFormData] = useState(formDataInitValue);
+
+  const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/products";
+
+  useEffect(() => {
+    axios({
+      method: 'GET',
+      url: url,
+    })
+      .then((response) => {
+        const { data } = response;
+        console.log(data)
+        setProducts(data);
+      })
+      .catch((error) => {
+        console.log(error, error.response);
+      });
+  }, [
+    //
+  ]);
 
   return (
     <div>
