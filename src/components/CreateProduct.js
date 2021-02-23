@@ -2,6 +2,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import { useState } from 'react';
+import axios from 'axios';
 
 function CreateProduct({
   click,
@@ -9,6 +10,7 @@ function CreateProduct({
   setProducts,
   formData: data,
   setFormData: setData,
+  setClick,
 }) {
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
@@ -18,15 +20,32 @@ function CreateProduct({
     });
   }
 
+  const themMoi = function () {
+    const createApiUrl = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products';
+    axios.post(createApiUrl, data)
+      .then(function (response) {
+        setProducts([
+          ...products,
+          response.data,
+        ]);
+
+        setData({
+          id: '',
+          name: '',
+          price: '',
+        });
+      })
+      .catch(function (error) {
+        console.log('error');
+        console.log(error);
+      })
+  }
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
     if (click == -1) {
-      // Tạo mới
-      setProducts([
-        ...products,
-        data,
-      ]);
+      themMoi();
     } else {
       // Cập nhật
       setProducts((oldState) => {
@@ -44,10 +63,20 @@ function CreateProduct({
     }
   }
 
+  const btnXoaFormOnClick = function (event) {
+    setClick(-1);
+    setData({
+      id: '',
+      name: '',
+      price: '',
+    });
+  }
+
   return (
     <div>
       <form onSubmit={ onSubmitHandler }>
         <TextField
+          disabled
           fullWidth
           label="Id"
           variant="outlined"
@@ -81,6 +110,14 @@ function CreateProduct({
             style={{ marginTop: '20px' }}
             color="primary">
             Submit
+          </Button>
+
+          <Button
+            type="reset"
+            onClick={ btnXoaFormOnClick }
+            style={{ marginTop: '20px', marginLeft: '20px' }}
+            color="secondary">
+            Xóa form
           </Button>
         </Box>
       </form>

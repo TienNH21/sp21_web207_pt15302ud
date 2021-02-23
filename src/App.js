@@ -21,7 +21,6 @@ function App() {
     })
       .then((response) => {
         const { data } = response;
-        console.log(data)
         setProducts(data);
       })
       .catch((error) => {
@@ -41,8 +40,10 @@ function App() {
               setProducts={ setProducts }
               formData={ formData }
               setFormData={ setFormData }
+              setClick={ setClick }
               click={ click }/>
             <ListProduct
+              setProducts={ setProducts }
               setFormData={ setFormData }
               setClick={ setClick }
               data={ products } />
