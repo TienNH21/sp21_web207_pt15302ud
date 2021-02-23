@@ -4,6 +4,7 @@ import Typography from '@material-ui/core/Typography';
 import ListProduct from './components/ListProduct';
 import CreateProduct from './components/CreateProduct';
 import axios from 'axios';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const formDataInitValue = { id: '', name: '', price: '' };
@@ -12,7 +13,13 @@ function App() {
   const [click, setClick] = useState(-1);
   const [formData, setFormData] = useState(formDataInitValue);
 
-  const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/products";
+  const urlParams = new URLSearchParams(window.location.search);
+  let pageInit = urlParams.get('page') != null ? parseInt(urlParams.get('page')) : 1;
+  const [page, setPage] = useState(pageInit);
+
+  const limit = 10;
+  const url = "https://5f2d045b8085690016922b50.mockapi.io/todo-list/products?limit=" +
+    limit + "&page=" + page;
 
   useEffect(() => {
     axios({
@@ -27,8 +34,21 @@ function App() {
         console.log(error, error.response);
       });
   }, [
-    //
+    page,
   ]);
+
+  const nextPage = function () {
+    setPage(page + 1);
+    console.log('page:', page)
+  }
+
+  const previosPage = function () {
+    if (page == 1) {
+      return ;
+    }
+
+    setPage(page - 1);
+  }
 
   return (
     <div>
@@ -47,6 +67,20 @@ function App() {
               setFormData={ setFormData }
               setClick={ setClick }
               data={ products } />
+
+            <ul className="pagination mt-4">
+              <li
+                onClick={ previosPage }
+                className="page-item">
+                <a className="page-link">Trang trước</a>
+              </li>
+              <li className="page-item"><a className="page-link">{ page }</a></li>
+              <li
+                onClick={ nextPage }
+                className="page-item">
+                <a className="page-link">Trang sau</a>
+              </li>
+            </ul>
           </Typography>
       </Container>
     </div>
