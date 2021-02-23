@@ -41,25 +41,34 @@ function CreateProduct({
       })
   }
 
+  const capNhat = function () {
+    const updateApiUrl = 'https://5f2d045b8085690016922b50.mockapi.io/todo-list/products/' + data.id;
+
+    axios.put(updateApiUrl, data)
+      .then(function (response) {
+        const newProducts = products.map(function (value, index) {
+          if (index == click) {
+            return response.data;
+          } else {
+            return value;
+          }
+        });
+
+        setProducts(newProducts);
+      })
+      .catch(function (error) {
+        console.log('error');
+        console.error(error);
+      })
+  }
+
   const onSubmitHandler = (event) => {
     event.preventDefault();
 
     if (click == -1) {
       themMoi();
     } else {
-      // Cập nhật
-      setProducts((oldState) => {
-        const newState = oldState.map((value, index) => {
-          if (index == click) {
-            return data;
-          } else {
-            return value;
-          }
-
-          // return index == click ? data : value;
-        });
-        return newState;
-      });
+      capNhat();
     }
   }
 
